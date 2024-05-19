@@ -1,14 +1,17 @@
-FROM node:14-alpine
+FROM node:18-alpine
 
-WORKDIR /app
+# Set working directory
+ENV ROOT="/app"
+WORKDIR ${ROOT}
 
-RUN apk update && apk upgrade
-RUN apk add git
+# Copy package.json and package-lock.json before other files
+# Utilise Docker cache to save re-installing dependencies if unchanged
+COPY ./package*.json ./
+COPY ./pnpm-lock.yaml ./
 
-COPY ./package*.json /app/
+RUN pnpm install --shamefully-hoist
 
-RUN npm install && npm cache clean --force
-
-COPY . .
+# Copy all files
+COPY ./ ./
 
 ENV PATH ./node_modules/.bin/:$PATH

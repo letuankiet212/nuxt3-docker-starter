@@ -1,11 +1,11 @@
 version: '3.3'
 
 services:
-  nuxt:
+  nuxt_docker_starter:
     build:
       context: .
-    image: nuxt_dev
-    container_name: nuxt_dev
+    image: nuxt_dev_image
+    container_name: nuxt_dev_container
     command: npm run dev
     volumes:
     - .:/app
